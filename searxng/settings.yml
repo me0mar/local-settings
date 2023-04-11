@@ -1,0 +1,93 @@
+# see https://docs.searxng.org/admin/engines/settings.html#use-default-settings
+use_default_settings: true
+server:
+  # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
+  secret_key: ""  # change this!
+  limiter: false  # can be disabled for a private instance
+  image_proxy: true
+  method: "GET"
+ui:
+  static_use_hash: true
+redis:
+  url: redis://redis:6379/0
+search:
+  safe_search: 0
+  autocomplete: "google"
+engines:
+  - name: currency
+    engine: currency_convert
+    categories: general
+    shortcut: cc
+    disabled: true
+  - name: dictzone
+    engine: dictzone
+    shortcut: dc
+    disabled: true
+  - name: lingva
+    engine: lingva
+    shortcut: lv
+    disabled: true
+  - name: wikidata
+    engine: wikidata
+    shortcut: wd
+    timeout: 3.0
+    weight: 2
+    disabled: true
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    base_url: 'https://{language}.wikipedia.org/'
+    disabled: true
+  - name: qwant
+    qwant_categ: web
+    engine: qwant
+    shortcut: qw
+    disabled: true
+#Enabled
+  - name: brave
+    shortcut: brave
+    engine: xpath
+    paging: true
+    time_range_support: true
+    first_page_num: 0
+    time_range_url: "&tf={time_range_val}"
+    search_url: https://search.brave.com/search?q={query}&offset={pageno}&spellcheck=1{time_range}
+    url_xpath: //a[@class="result-header"]/@href
+    title_xpath: //span[@class="snippet-title"]
+    content_xpath: //p[1][@class="snippet-description"]
+    suggestion_xpath: //div[@class="text-gray h6"]/a
+    time_range_map:
+      day: 'pd'
+      week: 'pw'
+      month: 'pm'
+      year: 'py'
+    categories: [general, web]
+    disabled: false
+    headers:
+      Accept-Encoding: gzip, deflate
+    about:
+      website: https://brave.com/search/
+      wikidata_id: Q107355971
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+  - name: startpage
+    engine: startpage
+    shortcut: sp
+    timeout: 6.0
+    disabled: false
+  - name: arch linux wiki
+    engine: archlinux
+    shortcut: al
+    disabled: false
+#Images Enabled
+  - name: duckduckgo images
+    engine: duckduckgo_images
+    shortcut: ddi
+    timeout: 3.0
+    disabled: false
+#Files Enabled
+  - name: 1337x
+    engine: 1337x
+    shortcut: 1337x
+    disabled: false
